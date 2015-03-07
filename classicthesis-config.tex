@@ -20,10 +20,12 @@
 \newcommand{\myTitle}{Reengineering und exemplarische Implementierung der
 Produktionsstrecke des Patentinformationssystems DEPAROM-Profil}
 \newcommand{\mySubtitle}{Arbeit zur Erlangung des Titels Bachelor of Science im
-Studiengang Medieninformatik} \newcommand{\myName}{Tim Michael
-Jagodzinski\xspace} \newcommand{\myProf}{Prof. Dr. Targo Pavlista\xspace}
+Studiengang Medieninformatik}
+\newcommand{\myName}{Tim Michael Jagodzinski\xspace}
+\newcommand{\myProf}{Prof. Dr. Targo Pavlista\xspace}
+\newcommand{\mySupervisor}{Prof. Dr. rer. nat. Elmar B\"{o}hler\xspace}
 \newcommand{\myFaculty}{Fachbereich VI, Informatik und Medien\xspace}
-\newcommand{\myUni}{Beuth Hochschule für Technik Berlin\xspace}
+\newcommand{\myUni}{Beuth Hochschule f\"{u}r Technik Berlin\xspace}
 \newcommand{\myLocation}{Berlin\xspace} \newcommand{\myTime}{M\"{a}rz
 2015\xspace} \newcommand{\myVersion}{Version 0.0\xspace}
 
@@ -52,7 +54,7 @@ Jagodzinski\xspace} \newcommand{\myProf}{Prof. Dr. Targo Pavlista\xspace}
 
  %------------------------------------------------
 
-%\PassOptionsToPackage{ngerman,american}{babel}  % Change this to your language(s)
+\PassOptionsToPackage{ngerman}{babel}  % Change this to your language(s)
 % Spanish languages need extra options in order to work with this template
 %\PassOptionsToPackage{spanish,es-lcroman}{babel}
 \usepackage{babel}
@@ -116,8 +118,25 @@ Jagodzinski\xspace} \newcommand{\myProf}{Prof. Dr. Targo Pavlista\xspace}
 %----------------------------------------------------------------------------------------
 
 \usepackage{listings}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch,
+            switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
 %\lstset{emph={trueIndex,root},emphstyle=\color{BlueViolet}}%\underbar} % for special keywords
-\lstset{language=[LaTeX]Tex, % Specify the language for listings here
+\lstset{language=JavaScript, % Specify the language for listings here
 keywordstyle=\color{RoyalBlue}, % Add \bfseries for bold
 basicstyle=\small\ttfamily, % Makes listings a smaller font size and a different font
 %identifierstyle=\color{NavyBlue}, % Color of text inside brackets
