@@ -2,12 +2,38 @@
 
 \chapter{Aufgabenstellung} % Chapter title
 
-\label{ch:aufgabenstellung} % For referencing the chapter elsewhere, use \autoref{ch:introduction} 
+\label{ch:aufgabenstellung} % For referencing the chapter elsewhere, use \autoref{ch:introduction}
 
 %----------------------------------------------------------------------------------------
 
-Durch eine klare Beschreibung der Aufgabenstellung wird die zu lösende Aufgabe
-deutlich. Vorhandene Teillösungen oder -systeme können hier ebenfalls
-dargestellt werden. In vielen Fällen ist es auch hilfreich Sachverhalte oder
-Problemstellungen zu beschreiben, die nicht zur Aufgabenstellung gehören
-(Abgrenzung).
+Die sogenannte Profil-Anwendung dient den Operatoren als zentrale
+Steuersoftware, um die Verarbeitung der Patentdaten zu vorausgewählten
+Patentsammlungen sicherzustellen. Die monolithische Anwendung wurde seit Beginn
+ihres Bestehens in der Mitte der 1990er Jahre ständig erweitert und modifiziert,
+um die reibungslose Verarbeitung der durch die Patentämter fortlaufend
+veränderten Patentdatenformate sicherstellen zu können.
+
+Die Aufgabe dieser Arbeit besteht darin, diese Anwendung mit 20 Jahre alter
+Codebase in das 21. Jahrhundert zu befördern. Hierfür sollen die vorhandenen
+Geschäftsprozesse analysiert, die für den zukünftigen Betrieb notwendigen Teile
+isoliert und in eine moderne und schlanke Spezifikation überführt werden.
+
+Diese Spezifikation in Form von User Stories und Datenmodellen soll anschließend
+in einem agilen Entwicklungsprozess umgesetzt werden. Regelmäßige Rücksprachen
+mit den zukünftigen Anwendern der Software sollen sicherstellen, dass die
+Implementierung die korrekte Interpretation der Spezifikation darstellt und
+Abweichungen kurzfristig korrigiert werden können.
+
+Als Ergebnis soll eine Webanwendung entstehen, welche die Operatoren befähigt,
+die regelmäßigen Datenlieferungen für die Kunden zu erstellen.
+
+\section{Abgrenzung}
+
+Dabei soll Profil.NG lediglich verwaltende und steuernde Aufgaben erfüllen und
+die  umliegenden Dienste des neuen Profilökosystems verwenden, um die
+Datenlieferungen zu erstellen.
+
+Es ist ausdrücklich nicht Teil dieser Arbeit, weitere Dienste zu erstellen oder
+zu modifizieren. Die zu erstellende Anwendung soll ausschließlich die
+Regelproduktion sicherstellen. Etwaige Sonderlocken, die für vereinzelte Kunden
+bestehen, sollen nicht implementiert werden.

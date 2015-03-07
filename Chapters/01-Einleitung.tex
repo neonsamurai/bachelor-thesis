@@ -1,14 +1,56 @@
 % Chapter 1
 
-\chapter{Einleitung} % Chapter title
+\chapter{DEPAROM Profil und die Entstehung von Profil.NG} % Chapter title
 
-\label{ch:einleitung} % For referencing the chapter elsewhere, use \autoref{ch:introduction} 
+\label{ch:profil.ng} % For referencing the chapter elsewhere, use \autoref{ch:introduction}
 
 %----------------------------------------------------------------------------------------
 
-Eine Einleitung bietet die Möglichkeiten den Sinn und Zweck der Diplomarbeit
-für einen Durchschnittsinformatiker (ohne die Spezialkenntnisse, die Sie jetzt
-haben) verständlich zu beschreiben. Hier können Sie Hintergründe darstellen,
-wie die Arbeit und das Thema entstanden und selbstverständlich für Ihre Arbeit
-werben. Interessierte Leser entscheiden hier, ob diese Arbeit für sie fachlich
-interessant ist.
+Die vorliegende Arbeit entstand bei der Moving Targets Consulting GmbH (MTC) und
+befasst sich mit der vollständigen Reimplementierung des Produktionssystems des
+Produktes DEPAROM Profil. Bei DEPAROM Profil handelt es sich um ein
+Patentinformationssystem, welches die wöchentlich von den verschiedenen
+Patentämtern der Welt publizierten Patentschriften erfasst, normalisiert,
+durchsuchbar macht und für die Kunden der MTC nach bestimmten Kriterien
+überwacht. Patentschriften, welche in die Überwachung passen, werden in einer
+normalisierten Form zusammengestellt und auf einem Datenträger dem Kunden
+zugestellt. Die Kunden bezahlen MTC für diese Dienstleistung.
+
+DEPAROM Profil wurde ursprünglich von der Bundesdruckerei GmbH Mitte der 1990er
+Jahre entwickelt und sollte 2005 auslaufen. Es wurde an MTC inklusive der
+Bestandskunden verkauft, fortgeführt und weiterentwickelt. Die Codebase aus C,
+C++, Java, Shell- und Pythonscripten, D-Modulen und Perlscripten ist
+mittlerweile zwanzig Jahre alt und in äußerst desolatem Zustand. Die Wartung
+nimmt den größten Teil der verfügbaren Entwicklungsressourcen ein und viele
+Bereiche des Systems bilden für die beteiligten Entwickler eine Blackbox.
+
+Damit MTC auch in Zukunft konkurrenzfähig im Bereich der
+Patentinformationssysteme bleibt, wurde deshalb durch die Geschäftsführung die
+vollständige Neuimplementierung des Systems beschlossen.
+
+Gegenstand dieser Arbeit soll ein Teilsystem von DEPAROM Profil sein, die
+sogenannte Profilanwendung. Diese ist die Steuersoftware mit der die Produktion,
+der Datenimport und die Kundenverwaltung gesteuert wird. Die neue Version dieser
+Anwendung wird im Folgenden als Profil.NG bezeichnet und ist Teil des Systems
+DEPAROM.NG.
+
+Bei der Neuimplementierung sollte ein Ökosystem aus unabhängigen Diensten
+entstehen, welche durch die zentrale Anwendung Profil.NG angesprochen werden, um
+die Patentinformationen für die Kunden zu erstellen. Die einzelnen Dienste
+kommunizieren über REST-Schnittstellen.
+
+Bei der Realisierung kommen die Technologien Java Spring Boot \cite{spring-boot}
+und Elasticsearch \cite{elasticsearch} für die Erstellung der Dienste zum
+Einsatz und MongoDB \cite{mongodb} sowie die Javascript-Plattform Meteor
+\cite{meteor} für die Entwicklung von Profil.NG.
+
+Als besondere Herausforderung gilt die Analyse- und Entwurfsphase, da alle
+bestehenden Geschäftsprozesse auf ihre Validität geprüft werden müssen, damit
+eine fundierte Entscheidung darüber getroffen werden kann, ob sie übernommen,
+modifiziert oder verworfen werden müssen.
+
+Insbesondere interessant stellt sich die Verwendung von Meteor als Plattform
+dar. Die vollständige Reaktivität der Plattform ermöglicht das Erforschen neuer
+Entwurfsmuster, sowie die Herausforderung, die bewährten Muster aus dem
+Standardwerk "Design Patterns. Elements of Reusable Object Oriented Software"
+\cite{design-patterns} auf das ungewohnte Programmierparadigma anzuwenden.
