@@ -2,16 +2,255 @@
 
 \chapter{Pflichtenheft} % Chapter title
 
-\label{ch:Pflichtenheft} % For referencing the chapter elsewhere, use \autoref{ch:introduction} 
+\label{ch:Pflichtenheft} % For referencing the chapter elsewhere, use \autoref{ch:introduction}
 
 %----------------------------------------------------------------------------------------
-Hier werden die Grundlagen für das zu entwickelnde Softwaresystem definiert.
-Zwar noch aus fachtechnischer Sicht werden hier die Anforderungen an das
-geplante Softwaresystem in möglichst formaler Form spezifiziert. Es sollen hier
-keine Lösungen präsentiert werden, sondern möglichst präzise die Anforderungen
-(Sollkonzept) an das geplante Softwaresystem mit seinen Schnittstellen,
-Informationsflüssen und Systemfunktionen dokumentiert werden. Verwendete
-Methoden können z.B. SA, SADT, Petri-Netze oder andere sein.
 
-Das Ergebnis ist ein für die Systementwicklung verwendbares Pflichtenheft. Über
-Art und Umfang des Pflichtenhefts sollten Sie mit Ihrem Betreuer sprechen.
+Im folgenden werden die Anforderungen an die Anwendung "`Profil.NG"' definiert.
+Wie bei einem Pflichtenheft üblich sind die Anforderungen in "`Muss-"',
+"`Kann-"' und "`Abgrenzungskritereien"' unterteilt. Im Anschluß folgt eine kurze
+Beschreibung der Betriebsumgebung sowie eine Beschreibung der erforderlichen
+Funktionalitäten anhand von User Stories.
+
+\section{Zielsetzung}
+
+Die Anwendung Profil.NG soll den Anwender (im Folgenden "`Operator"') dazu
+befähigen, die Produktion Patentinformationslieferung im Rahmen des
+Patentinformationsdienstes DEPAROM-Profil zu steuern und die Qualitätsstandards
+des Produkts zu gewährleisten.
+
+\subsection{Muss-Kriterien}
+
+Profil.NG muss...
+
+\begin{enumerate}
+  \item{mit den Webbrowsern Safari, Chrome und Firefox benutzbar sein.}
+  \item{eine grafische Benutzeroberfläche in Form einer Fat-Client Webanwendung
+        haben.}
+  \item{durch Benutzerkonten mit Login geschützt sein.}
+  \item{Operatoren befähigen, Kundenkonten zu verwalten.}
+  \item{Operatoren befähigen, Suchaufträge zu verwalten.}
+  \item{Operatoren befähigen, die Patentinformationslieferungen zu produzieren.}
+  \item{Operatoren befähigen, die Konsistenz der Patentinformationslieferungen
+        zu gewährleisten, insbesondere aber keine Dokumente doppelt
+        auszuliefern.}
+\end{enumerate}
+
+\subsection{Kann-Kriterien}
+
+Profil.NG sollte...
+
+\begin{enumerate}
+  \item{den Operatoren einen Kalender zur Planung der Produktionsläufe
+        bereitstellen.}
+  \item{die Operatoren anhand von Statistiken und Histogrammen bei der
+        Qualitätssicherung unterstützen.}
+  \item{die Operatoren befähigen, Patentdokumente aus nichtregulären Quellen in
+        die Patentinformationslieferungen einzufügen.}
+  \item{den Operatoren eine transparente Übersetzungsfunktion bieten, die
+        Suchanfragen von der DEPAROM-Query-Sprache in die
+        Elasticsearch-Query-Sprache übersetzt, so dass die Operatoren nur mit
+        DEPAROM-Queries arbeiten müssen.}
+  \item{statistische Daten erheben, die für die Rechnungsstellung verwendet
+        werden können.}
+  \item{druckbare Seiten anzeigen können, die der Dokumentation der
+        Produktionswoche dienen.}
+\end{enumerate}
+
+\subsection{Abgrenzungskriterien}
+
+Profil.NG soll nicht...
+
+\begin{enumerate}
+  \item{eigene Dienste für die Verarbeitung von Patentiformationen
+        bereitstellen.}
+  \item{Ausgabeformate erstellen.}
+  \item{Rechnungen erstellen.}
+  \item{die Produktionsabläufe und Aktionen der Operatoren protokollieren, also
+        eine elektronische Produktionsdokumentation erstellen.}
+\end{enumerate}
+
+\section{Produkteinsatz}
+
+Profil.NG wird als Intranetanwendung im Firmennetzwerk betrieben. Nur ein
+Anwender, der sich mittels Logindaten authentifiziert kann alle Funktionen der
+Anwendung benutzen. Die Anwendung kann nur über das Intranet oder einen
+VPN-Zugang zu selbigem erreicht werden.
+
+\subsection{Zielgruppe}
+
+Profil.NG wird von speziell geschulten Operatoren benutzt.
+
+\subsection{Betriebsbedingungen}
+
+Profil.NG muss zu den Bürozeiten im Intranet erreichbar sein. Die Anwendung wird
+auf der firmeneigenen Infrastruktur in einer virtuellen Maschine betrieben
+werden. Die  zu erwartende Last auf dieser Maschine wird aufgrund der geringen
+Nutzerzahl (max. 2 gleichzeitige Benutzer) gering eingeschätzt. Auf eine
+redundante Systemarchitektur mit mehreren Applikationsservern kann verzichtet
+werden.
+
+\subsection{Technische Produktumgebung}
+
+Es wird empfohlen, die Webanwendung auf einem eigenen Server abzulegen. Davon
+getrennt sollte die Datenbank (MongoDB) als Replikaset konfiguriert werden, und
+auf mindestens zwei verschiedene Server verteilt werden. Hierdurch wird die
+nötige Datensicherheit gewährleistet, auch wenn eine Serverinstanz ausfallen
+sollte.
+
+\subsubsection{Hardware}
+
+Die Anwendung wird auf der firmeneigenen Virtualisierungsinfrastruktur
+installiert. Diese bietet mehr als ausreichende Leistungsreserven, um die zu
+erwartende Last auf Appliaktions- und Datenbankserver zu bewältigen.
+
+\subsubsection{Software}
+
+Für den Applikationsserver wird benötigt:
+
+\begin{itemize}
+  \item{Linuxbetriebssystem, z.B. Ubuntu}
+  \item{Applikationsserver: Node.js}
+  \item{Webserver, z.B. Nginx}
+\end{itemize}
+
+Für die Datenbankserver wird benötigt:
+
+\begin{itemize}
+  \item{Linuxbetriebssystem, z.B. Ubuntu}
+  \item{Datenbanksystem: MongoDB}
+\end{itemize}
+
+\subsubsection{Produktschnittstellen}
+
+Profil.NG bietet eine grafische Benuterschnittstelle, um Eingaben der Operatoren
+entgegenzunehmen.
+
+Das System verwendet Schnittstellen zu folgenden Diensten im DEPAROM.NG-Ökosystem:
+
+\begin{itemize}
+  \item{Simple Reference Store}
+  \item{Collection Creator}
+\end{itemize}
+
+\section{Produktübersicht}
+
+Als Produktübersicht soll der Arbeitsablauf (\autoref{fig:DEPOPSWorkflow},
+Seite \pageref{fig:DEPOPSWorkflow}) der Operatoren dienen. Diesen wird Profil.NG
+ermöglichen und unterstützen.
+
+\begin{figure}[h]
+  \includegraphics[height=0.9\textheight]{gfx/operator_workflow_vertikal.pdf}
+  \caption{DEPAROM Operatoren Arbeitsablauf}
+  \label{fig:DEPOPSWorkflow}
+\end{figure}
+
+\section{Produktfunktionen}
+
+Anhand eines Use-Case-Diagramms (\autoref{fig:PNGUseCases}, Seite
+\pageref{fig:PNGUseCases}) soll der Funktionsumfang skizziert werden. Im
+Anschluss folgt die Beschreibung der Anwendungsfälle in Form von User Stories.
+
+\begin{figure}[h]
+  \includegraphics[width=0.9\textwidth]{gfx/use_cases.pdf}
+  \caption{Profil.NG-Anwendungsfälle}
+  \label{fig:PNGUseCases}
+\end{figure}
+
+\subsection{User Stories}
+
+Die hier beschriebenen User Stories folgen einem bestimmten Format, das den
+Autor, aber auch den Leser
+
+\begin{enumerate}
+  \item{in die Gedankenwelt des jeweiligen Anwenders versetzen soll}
+  \item{die gewünschte Aktivität des Anwenders beschreiben soll}
+  \item{die zugrundeliegende Motivation des Anwenders herausstellen soll.}
+\end{enumerate}
+
+Dies soll beim Systementwurf und der Implementierung dabei helfen, jeweil im
+Scope der Anwendungsfälle zu bleiben und bei der Diskussion über unscharfe
+Anforderungen schon einen Hinweis auf die gewünschte Richtung geben soll.
+
+Das Template entspricht folgendem Format von Mike Cohn
+\cite{user-stories-format}:
+
+\begin{quotation}
+  Als <Anwendertyp> möchte ich <ein Ziel erreichen>, damit <ich einen Nutzen habe>
+\end{quotation}
+
+
+\subsubsection{[01] Im System authentifizieren}
+
+Als Operator
+
+möchte ich mich bei Profil.NG anmelden,
+
+damit ich meine Produktionsaufgaben erfüllen kann.
+
+\subsubsection{[02] Vom System abmelden}
+
+Als Operator
+
+möchte ich mich von Profil.NG abmelden,
+
+damit ich keinen unberechtigten Zugriff von meiner Arbeitsstation erlaube.
+
+\subsubsection{[03] Kunde anlegen}
+
+Als Operator
+
+möchte ich ein neues Kundenprofil anlegen,
+
+damit ich Überwachungsaufträge für den Kunden erstellen kann.
+
+\subsubsection{[04] Kunde bearbeiten}
+
+Als Operator
+
+möchte ich ein Kundenprofil bearbeiten,
+
+damit ich veränderte Stammdaten meines Kunden übertragen kann.
+
+\subsubsection{[05] Überwachungsauftrag anlegen}
+
+Als Operator
+
+möchte ich einen Überwachungsauftrag in den Stammdaten meines Kunden anlegen,
+
+damit ich das Suchprofil für meinen Kunden erstellen kann.
+
+\subsubsection{[06] Suchprofil erstellen}
+
+Als Operator
+
+möchte ich ein Suchprofil im Überwachungsauftrag meines Kunden erstellen,
+
+damit ich die Patentinformationslieferung für meinen Kunden zusammenstellen kann.
+
+\subsubsection{[07] Trefferlisten erstellen}
+
+Als Operator
+
+möchte ich auf einer Übersicht der vorhandenen Überwachungsaufträge die zu produzierenden
+Aufträge auswählen für sie Trefferlisten ermitteln lassen,
+
+damit ich die Qualitätskontrolle durchführen kann und die Ausgabeformate erstellen kann.
+
+\subsubsection{[08] Trefferlisten anzeigen}
+
+Als Operator
+
+möchte ich die Anzahl der Treffer und die Trefferlisten der zu produzierenden
+Überwachungsaufträge einsehen,
+
+damit ich die Qualitätskontrolle durchführen kann.
+
+\subsubsection{[09] Ausgabeformate erstellen}
+
+Als Operator
+
+möchte ich Trefferlisten von Überwachungsaufträgen auswählen und für diese die
+Ausgabeformate erstellen,
+
+damit ich sie anschließend für die Konfektionierung weiterverarbeiten kann.
