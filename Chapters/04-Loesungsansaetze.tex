@@ -2,11 +2,105 @@
 
 \chapter{Lösungsansätze} % Chapter title
 
-\label{ch:Lösungsansätze} % For referencing the chapter elsewhere, use \autoref{ch:introduction} 
+\label{ch:Lösungsansätze} % For referencing the chapter elsewhere, use \autoref{ch:introduction}
 
 %----------------------------------------------------------------------------------------
 
-Nach der Beschreibung des fachlichen Umfeldes können ausgewählte (vielleicht
-alle?) für die Aufgabenstellung relevanten Probleme vorgestellt, Vor- und
-Nachteile bestehender Lösungen argumentiert und die voraussichtlich angestrebte
-(weil vorteilhafte) Lösung herausgestellt werden.
+Im bestehenden System DEPAROM-Profil ist die sogenannte "`Profilanwendung"' die
+zentrale Steuerungsanwendung für die Operatoren. Es handelt sich bei dieser
+Anwendung um eine monolithische Anwendung mit grafischer Benutzeroberfläche, die
+viele verschiedene Aufgaben erfüllt. Hierzu gehören auch Aufgaben, die nicht
+direkt mit der Produktion der Patentinformationslieferungen zu tun haben, wie
+beispielsweise der Import der Rohdaten, die Indexierung und die
+Datenbankverwaltung. Hieraus resultiert eine schwere Wartbarkeit.
+
+Die neue "`Profilanwendung"' mit der Bezeichnung "`Profil.NG"' soll einen enger
+gefassten Scope erhalten. Sie soll ausschliesßlich verwaltende und steuernde
+Aufgaben erfüllen. Die eigentliche Arbeit wird durch einzelnen Webdienste
+verrichtet.
+
+Folgende Probleme müssen vorrangig gelöst werden.
+
+\section{Produktionsplan}
+\label{ch:Lösungsansätze:Produktionsplan}
+
+Die verschiedenen Suchaufträge müssen in regelmäßigen Abstanden durchgeführt
+werden. Hierzu wurde bisher durch ein Perlscript eine Textdatei generiert,
+welche die einzelnen Produktionsdaten für jede Kalenderwoche enthält. Das
+Perlscript kann nur Produktionsdaten etwa 12 Monate im voraus generieren. Läuft
+der aktuelle Produktionsplan aus, muss das Skript neu angestoßen werden, mit den
+Parametern für den neuen Produktionszyklus. Wird dies vergessen, kommt es zu
+Fehlerzustaänden, die nur durch Entwickler behoben werden können.
+
+Um diesen Umstand zu umgehen, soll ein wochenbasierter Kalender implementiert
+werden, welcher die Produktionsereignisse verwaltet, so dass die Operatoren sich
+nicht mehr um den Produktionsplan kümmern müssen.
+
+Die Verwaltung der sich wiederholenden Ereignisse ist niht ganz trivial und ich
+möchte einige Lösungsideen diskutieren.
+
+\subsection{Der berechnete Kalender}
+\label{ch:Lösungsansätze:Produktionsplan:BerechneterKalender}
+
+Um die Datenhaltung möglichst simpel zu halten, zog ich zunächst ein Modell in
+betracht, bei dem nur die Kalenderwoche des Beginns der Patentüberwachung sowie
+das Zeitintervall für die Wiederholung gespeichert würde. Mit diesen Daten wäre
+es möglich für jede Kalenderwoche die fälligen Suchaufträge zu berechnen.
+
+Dieses Modell funktioniert leider nur gut, wenn keine Unregelmäßigkeiten im
+Zeitablauf vorkommen. Möchte man einzelne Ereignisse verschieben oder aussetzen,
+müsste man Ausnahmeobjekte speichern und diese bei jedem Anzeigen des
+Produktionsplans abrufen, um ggf. die Regelereignisse zu ignorieren. Mir
+erschien diese Vorgehensweise als zu kompliziert. Zu dem müssen Metadaten zu den
+Ereignissen gespeichert werden, und es muss möglich sein, bereits geschehene
+Ereignisse zurückzusetzen, damit man eine fehlerbehaftete
+Patentinformationslieferung erneut produzieren kann.
+
+Da die Anforderungen das Modell des berechneten Kalenders übersteigen, und
+ohnehin zu jedem Produktionsereignis weitere Daten gespeichert werden müssen
+verwarf ich dieses Modell zugunsten eines Modells, das ich "Persistierter
+Kalender" nenne.
+
+\subsection{Der persistierte Kalender}
+\label{ch:Lösungsansätze:Produktionsplan:PersistierteKalender}
+
+Bei diesem Modell wird der Beginn der Patentüberwachung gespeichert und auch
+jedes Produktionsereignis als eigenes Objekt. Dies ermöglicht das
+Speichern zusätzlicher Metainformationen, die für jedes Ereignis individuell
+sein können. Teil der Anforderung ist bspw. auch, dass Produktionsläufe
+zurückgesetzt werden können. Dies ist z.B. dann erforderlich, wenn unbemerkt
+fehlerhafte Eingangsdaten verarbeteitet wurden, oder wenn Patente von einem
+Patentamt depubliziert werden.
+
+Der Vorteil dieser Lösung liegt in seiner Flexibilität. Es ist nun möglich,
+Produktionsläufe zu verschieben, zu löschen oder zurückzustellen und es können
+beliebige Metadaten zu jedem Produktionslauf gespeichert werden.
+
+Bei der Erstellung eines Suchauftrages müssen allerdings alle
+Produktionsereignisse über den Überwachungszeitraum berechnet, erstellt und
+gespeichert werden. Dies kann abhängig von Dauer und Häufigkeit der
+Patentüberachung zu einer großen Zahl an Datenbankoerationen führen. Zudem ist
+noch ungeklärt, wie mit Suchaufträgen umgegangen werden soll, die kein
+Ablaufdatum besitzen.
+
+Vermutlich wird es aber auf einen Algorhitmus hinauslaufen, der die
+Produktionsereignisse zunächst für einen festgelegten Zeitraum im Voraus
+erstellt (bspw. für 12 Monate). Im Modell der Produktionsereignisse wird es dann
+eine Routine geben die prüft, ob noch Produktionsereignisse bevorstehen und ggf.
+weitere 12 Monate mit Produktionsereignissen füllen.
+
+\section{Interserverkommunikation}
+\label{ch:Lösungsansatze:Interserverkommunikation}
+
+Die Kommunikation mit anderen Diensten über ein Netzwerk ist eine völlig neue
+Problematik, die beim bisherigen System nicht auftrat. Da DEPAROM.NG aus
+verschiedenen Diensten mit fest definierten Aufgaben besteht, muss Profil.NG
+alle Aufgaben delegieren, die außerhalb ihres Scopes liegen. Hierzu gehören u.a.
+die Patentsuche und die Erstellung der Ausgabeformate.
+
+Diese Aufgaben laufen asynchron ab und können einige Zeit in Anspruch nehmen. Es
+wird also erforderlich sein, eine Methode zur Verwaltung dieser Aufgaben zu
+entwickeln. Ein gangbarer Weg wäre es, eine Work Queue zu implementieren, in
+der die einzelnen Jobobjekte abgearbeitet werden können. Darüber hinaus sollten
+die Jobobjekte in der Datenbank persistiert werden, damit sie auch einen
+Serverneustart überleben und die Produktionsvorgänge konsistent bleiben.
