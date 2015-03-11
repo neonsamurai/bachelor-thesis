@@ -2,20 +2,228 @@
 
 \chapter{Systementwurf} % Chapter title
 
-\label{ch:Systementwurf} % For referencing the chapter elsewhere, use \autoref{ch:introduction} 
+\label{ch:Systementwurf} % For referencing the chapter elsewhere, use \autoref{ch:introduction}
 
 %----------------------------------------------------------------------------------------
 
-Auf der Basis des Pflichtenhefts werden aus softwaretechnischer Sicht die
-Anforderungen an das System spezifiziert. Hierzu gehört minimal eine
-Beschreibung auf höherem Niveau (Modulebene), eine auf mittlerem Niveau
-(Struktogramme, Pseudocode oder Spezifikation von Prozeduren (Funktionen) sowie
-die Beschreibung der für das System essentiellen Datenstrukturen (z.B. als
-Datenlexikon). Typische Beschreibungen sind die Modulhierarchie (oder
-Modulgraph), eine Spezifikation aller Module mit ihren Schnittstellen
-(inklusive Zweck, Ein-/Ausgabe), sowie eine Spezifikation aller in den
-Modulschnittstellen liegenden Prozeduren und Funktionen.
+Zur besseren Einordnung von Profil.NG in das Gesamtsystem DEPAROM.NG sei hier
+nochmals auf die  Systemübersicht (\autoref{fig:DNGOverview}, Seite
+\pageref{fig:DNGOverview}) verwiesen.
 
-Bestandteil des Entwurfs sollten nicht nur die jeweiligen Ergebnisse, sondern
-auch die Beschreibung des Entwicklungsweges (inklusive verworfener Lösungen)
-sein.
+Im folgenden Teil sollen die für Profil.NG verwendeten Technologien, die
+Motivation hinter deren Verwendung und spezifische Entwurfsprobleme in Bezug auf
+den Technologiestack näher beleuchtet werden.
+
+\section{Systemarchitektur}
+
+Das System Profil.NG besteht aus
+
+\begin{itemize}
+  \item{einer Clientkomponente}
+  \item{einer Serverkomponente}
+  \item{einer Datenbankkomponente}
+\end{itemize}
+
+Die Clientkomponente wird die Aufgaben der Benutzerschnittstelle übernehmen. Sie
+soll als Fat-Client konzipiert in einem modernen Webbrowser laufen. Aufgrund der
+Betriebsumgebung in einem Webbrowser ist die gewählte Programmiersprache
+natürlicherweise JavaScript.
+
+Die Kommunikation zwischen dem Client und dem Server wird über Websockets
+ablaufen. Das Protokoll für die Datenübertragung wird das Distributed Data
+Protcol \cite{ddp} sein.
+
+Die Serverkomponente beherbergt die Geschäftslogik und ist für die Kommunikation
+mit der Datenbank zuständig. Auch das Serverprogramm wird in JavaScript
+geschrieben.
+
+Das Datenbanksystem wird MongoDB sein, eine nichtrelationale, dokumentbasierte
+Datenbank. Sie akzeptiert JSON-Dokumente, das Datenaustauschformat von
+JavaScript, als Eingabedaten und eignet sich daher gut für ein System, welches
+mehrheitlich in JavaScript geschrieben ist.
+
+\begin{figure}[h]
+  \includegraphics[width=0.9\textwidth]{gfx/meteor_architektur.pdf}
+  \caption{Vereinfachte Meteor Systemarchitektur nach \cite{meteor-architecture}}
+  \label{fig:MeteorArchitektur}
+\end{figure}
+
+\subsection{Programmiersprache und Plattform}
+
+Die Entwicklungsplattform wird Meteor sein, eine komplett in JavaScript
+geschriebene Plattform für die Entwicklung von Webanwendungen. Meteor stellt
+eine isomorphe API für Client- und Serverentwicklung bereit. Meteor folgt sieben
+Designprinzipien \cite{meteor-7}, die interessierten Entwicklern eine Umgebung
+für effizientes und schnelles Entwickeln von Webanwendungen ermöglichen soll.
+
+\begin{quotation}
+
+  \begin{description}
+
+    \item[Datenübertragung]{Meteor schickt kein HTML über das Netzwerk, sondern
+    nur Daten. Der Client rendert diese Daten dann}
+
+    \item[Eine Sprache]{Sowohl Client-, als auch Serverkomponente werden in
+    JavaScript geschrieben}
+
+    \item[Datenbank überall]{Die Datenbank kann auf Client- und auf Serverseite
+    mit den gleichen Methoden manipuliert werden.}
+
+    \item[Verzögerungskompensierung]{Auf der Clientseite werden Daten
+    vorgespeichert und Datenbankoperationen simuliert, um eine verzögerungsfreie
+    Benutzererfahrung zu ermöglichen.}
+
+    \item[Reaktivität über alle Schichten]{Mit Meteor ist Echtzeit der Standard.
+    Alle Schichten, von der Datenbank bis zu den Templates, aktualisieren sich
+    selbständig.}
+
+    \item[Nutze das Ökosystem]{Meteor lässt sich einfach mit bestehenden
+    Bibliotheken und Frameworks integrieren.}
+
+    \item[Einfach bedeutet produktiv]{Die beste Art, etwas einfach aussehen zu
+    lassen ist, etwas tatsächlich einfach zu machen. Die Hauptfunktionen von
+    Meteor stellen einfache APIs bereit.}
+
+  \end{description}
+
+\end{quotation}
+
+Die Wahl viel auf Meteor, da ich mir insbesondere aufgrund der Einsprachigkeit,
+der Isomorphie und der vollständigen Reaktivität Effizienzsteigerungen bei der
+Entwicklung verspreche.
+
+Zudem bietet Meteor die Möglichkeit, das Programm für verschiedene
+Zielplattformen (derzeit Node.js, Android und iOS) zu kompilieren. So wird das
+Bedienen der unterstützten Plattformen stark vereinfacht.
+
+Meteor wurde auch deshalb ausgewählt, um Erfahrungen mit der Plattform zu
+sammeln, so dass sich MTC ggf. auch strategisch auf diese Plattform stützen kann
+und auch zukünftige Projekte mit dieser Technologie realisieren kann.
+
+\subsection{Benutzerschnittstelle}
+
+Blaze
+
+\subsection{Datenbanksystem}
+
+MongoDB
+
+\section{Drei-Schicht-Architektur nach Meteor}
+
+???
+
+\section{Fachklassenmodell}
+
+Aus den fachlichen Anforderungen in \autoref{ch:Pflichtenheft}
+(\pageref{ch:Pflichtenheft}) konnte ich ein Aktivitätsmodell ableiten, das ich
+in Form eines Aktivitätsdiagramms (\autoref{fig:PNGActivity}, Seite
+\pageref{fig:PNGActivity}) abgebildet habe.
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/activity.pdf}
+  \caption{Profil.NG - Aktivitätsmodell}
+  \label{fig:PNGActivity}
+\end{figure}
+
+Die in diesem Diagramm wiederkehrenden Begriffe "`Kunde"', "`Monitoring"',
+"`Query"' bildeten die Basis für das Fachklassenmodell
+(\autoref{fig:PNGFachklassen}, Seite \pageref{fig:PNGFachklassen}).7
+
+Hierbei ist anzumerken, dass in einer früheren Version die Klasse "`Occurance"'
+noch nicht existierte. Als während der Analyse der Geschäftsprozesse jedoch die
+Anforderung ermittelt wurde, dass Produktionsläufe einzelner
+Überwachungsaufträge rückgängig gemacht oder für eine spätere Produktion
+zurückgestellt werden sollten, wurde schnell klar, dass jedes
+Produktionsereignis einzeln behandelt werden muss und sich das Konzept des
+Berechneten Kalenders in
+\autoref{ch:Lösungsansätze:Produktionsplan:BerechneterKalender} (Seite
+\pageref{ch:Lösungsansätze:Produktionsplan:BerechneterKalender}) als nicht
+ausreichend für die gestellten Anforderungen erwies.
+
+Die Klasse "`DeliveredDoc"' leitete ich aus der Anforderung ab, dass keine
+Patentdokumente doppelt an einen Kunden ausgeliefert werden dürfen. Deshalb
+werden Objekte gespeichert, die ausgelieferte Dokumente repräsentieren und die
+eindeutig einem bestimmten Monitoring zugeordnet werden.
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/fachklassen.pdf}
+  \caption{Profil.NG - Fachklassenmodell}
+  \label{fig:PNGFachklassen}
+\end{figure}
+
+\section{Sequenzdiagramme}
+
+Im folgenden werden Sequenzdiagramme angegeben, welche Funktionalitäten abbilden,
+die nicht von Meteor-Standardfunktionen (wie z.B. Login/Logout) abgedeckt sind.
+
+\subsection{[03] Kunde anlegen}
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/03-kunde-anlegen.pdf}
+  \caption{Anwendungsfall 03: Kunde anlegen}
+  \label{fig:AF03}
+\end{figure}
+
+\subsection{[04] Kunde bearbeiten}
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/04-kunde-bearbeiten.pdf}
+  \caption{Anwendungsfall 04: Kunde bearbeiten}
+  \label{fig:AF04}
+\end{figure}
+
+\subsection{[05] Überwachungsauftrag erstellen}
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/05-uberwachungsauftrag-erstellen.pdf}
+  \caption{Anwendungsfall 05: Überwachungsauftrag erstellen}
+  \label{fig:AF05}
+\end{figure}
+
+\subsection{[06] Suchprofil erstellen}
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/06-suchprofil-erstellen.pdf}
+  \caption{Anwendungsfall 03: Suchprofil erstellen}
+  \label{fig:AF06}
+\end{figure}
+
+\subsection{[07] Trefferlisten erstellen}
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/07-trefferlisten-erstellen.pdf}
+  \caption{Anwendungsfall 07: Trefferlisten erstellen}
+  \label{fig:AF07}
+\end{figure}
+
+\subsection{[08] Trefferlisten anzeigen}
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/08-trefferlisten-anzeigen.pdf}
+  \caption{Anwendungsfall 08: Trefferlisten anzeigen}
+  \label{fig:AF08}
+\end{figure}
+
+\subsection{[09] Ausgabeformate erstellen}
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/09-ausgabeformate-erstellen.pdf}
+  \caption{Anwendungsfall 09: Ausgabeformate erstellen}
+  \label{fig:AF09}
+\end{figure}
+
+\subsection{[10.1] Produktion zurücksetzen (Trefferlisten)}
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/10-1-produktion-reset-hitlist.pdf}
+  \caption{Anwendungsfall 10.1: Produktion zurücksetzen (Trefferlisten)}
+  \label{fig:AF10-1}
+\end{figure}
+
+\subsection{[10.2] Produktion zurücksetzen (Ausgabeformate)}
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/10-2-produktion-reset-output.pdf}
+  \caption{Anwendungsfall 10.2: Produktion zurücksetzen (Ausgabeformate)}
+  \label{fig:AF10-2}
+\end{figure}
