@@ -44,7 +44,7 @@ mehrheitlich in JavaScript geschrieben ist.
 
 \begin{figure}[h]
   \includegraphics[width=0.9\textwidth]{gfx/meteor_architektur.pdf}
-  \caption{Vereinfachte Meteor Systemarchitektur nach \cite{meteor-architecture}}
+  \caption{Vereinfachte Meteor Systemarchitektur nach Watson \cite{meteor-architecture}}
   \label{fig:MeteorArchitektur}
 \end{figure}
 
@@ -88,7 +88,7 @@ für effizientes und schnelles Entwickeln von Webanwendungen ermöglichen soll.
 
 \end{quotation}
 
-Die Wahl viel auf Meteor, da ich mir insbesondere aufgrund der Einsprachigkeit,
+Die Wahl fiel auf Meteor, da ich mir insbesondere aufgrund der Einsprachigkeit,
 der Isomorphie und der vollständigen Reaktivität Effizienzsteigerungen bei der
 Entwicklung verspreche.
 
@@ -100,22 +100,95 @@ Meteor wurde auch deshalb ausgewählt, um Erfahrungen mit der Plattform zu
 sammeln, so dass sich MTC ggf. auch strategisch auf diese Plattform stützen kann
 und auch zukünftige Projekte mit dieser Technologie realisieren kann.
 
-\subsection{Benutzerschnittstelle}
-
-Blaze
-
-\subsection{Datenbanksystem}
-
-MongoDB
-
 \section{Drei-Schicht-Architektur nach Meteor}
 
-???
+Aufgrund der besonderen Topologie der Meteor-Plattform ist es nicht ganz
+einfach, die klassische Drei-Schicht-Architektur nach Balzert \cite{balzert} im
+Entwurf zu realisieren. Die Schichten für Präsentation, Logik und Daten lassen
+sich zwar auch hier wiederfinden, eine klassische Zuordnung von Klassen, deren
+Abwandlungen sich dann in den verschiedenen Schichten wiederfinden, ist jedoch
+nicht einfach abzubilden.
+
+Meteor stellt für die verschiedenen Schichten bestimmte Werkzeuge zu Verfügung,
+die im Folgenden kurz dargestellt werden sollen.
+
+\begin{figure}[h]
+  \includegraphics[width=0.9\textwidth]{gfx/meteor_3_schicht.pdf}
+  \caption{Vereinfachte Meteor Drei-Schicht-Architektur}
+  \label{fig:MeteorDreiSchichtArchitektur}
+\end{figure}
+
+\subsection{Präsentationssschicht}
+
+Die Präsentationsaufgaben werden bei Meteor von der Templatebibliothek Blaze
+\cite{blaze} übernommen. Darstellungselemente wie Webseiten, Formulare und
+Navigationselemente werden als Templates im Spacebars-Format definiert.
+Spacebars \cite{spacebars} akzeptiert eine HTML-artige Syntax, die mit einfachem
+Markup für die Darstellungslogik angereichert ist.
+
+Mit dem Spacebars-Markup lassen sich Bereiche an Funktionen binden, die
+Daten für die Darstellung berechnen und bereitstellen.
+
+Blaze registriert eigenständig Veränderungen der mit dem Template verbundenen
+Daten, ermittelt die betroffenen Bereiche im Template und aktualisiert das
+Document Object Model im Webbrowser, um die Veränderungen zu reflektieren.
+
+Für die Darstellungslogik stellt Meteor für jedes Template ein Objekt
+unter dem Namespace "`Template"' zur Verfügung. In diesem Objekt sind Objekte
+und Funktionen enthalten, mit denen das Eventhandling und die Präsentationslogik
+definiert werden kann. Die Logik für die Präsentation wird in Form von
+Funktionen im Namespace Template.nameDesTemplates.helpers definiert.
+Die Rückgabewerte dieser Funktionen können dann im betreffenden Template
+mithilfe des Spacebars-Markup und des Templatenamens platziert werden.
+
+\subsection{Logikschicht}
+
+Für die Behandlung der Geschäftslogik bietet Meteor sogenannte
+"`Meteor.methods"'. Diese Methoden sind global definiert und können durch die
+Methode Meteor.call() aufgerufen werden. Meteor.methods sind der einzige Weg, um
+Datenbankzugriffe durchzuführen.
+
+Meteor.methods können sowohl auf dem Client als auch auf dem Server definiert
+werden, ihr Verhalten ist unterschiedliche, je nach dem in welcher Umgebung sie
+sich befinden.
+
+Auf dem Server definierte Meteor.methods können vom Client aus aufgerufen
+werden. Sie werden dann auf dem Server ausgeführt und liefern ggf. ein Ergebnis
+zurück.
+
+Werden Meteor.methods auf dem Client und dem Server definiert, verursacht der
+Aufruf der  Methode auf dem Client parallel dazu auch einen Aufruf auf dem
+Server. Lokal auf dem Client wird die Methode augenblicklich ausgeführt und eine
+Simulation des Ergebnisses verwendet, um die Daten im Client verzögerungsfrei zu
+aktualisieren. Ist der entfernte Aufruf auf dem Server beendet und hat ein
+Ergebnis zum Client zurückgesandt, wird dieses das simulierte Ergebnis (vom
+Anwender unbemerkt) ersetzen.
+
+\subsection{Datenhaltungsschicht}
+
+Die Datenhaltung ist in Meteor analog zur Logikschicht, sowohl auf dem Client,
+als auch auf dem Server vorhanden.
+
+Auf dem Server betreffen Datenbankzugriffe direkt die Datenbank, so wie man es aus
+anderen Plattformen wie z.B. Java Spring gewohnt ist. Zur Verwendung kommt hier
+der Node-MongoDB-Datenbanktreiber.
+
+Auf dem Client existiert eine Replik der Datenbank, die durch eine
+JavaScript-Implementierung des MongoDB-Datenbanktreibers namens "`Minimongo"'
+\cite{minimongo} realisisert ist. Die an den Client replizierten Daten werden
+dabei ggf. vom Server mittels Authentifizierungs- und Authorisierungsregeln
+vorgefiltert, so dass nur Daten die für den verbunden Client bestimmt sind
+gesendet werden.
+
+Der Client hat keinen direkten Zugriff auf die Datenbank. Er kann nur Daten aus
+seiner lokalen Replik lesen und alle Schreibzugriffe lösen Remote Procedure
+Calls auf die API des Servers aus, so dass nur Servercode die Datenbank
+manipulieren kann.
 
 \section{Fachklassenmodell}
 
 Aus den fachlichen Anforderungen in \autoref{ch:Pflichtenheft}
-(\pageref{ch:Pflichtenheft}) konnte ich ein Aktivitätsmodell ableiten, das ich
+(Seite \pageref{ch:Pflichtenheft}) konnte ich ein Aktivitätsmodell ableiten, das ich
 in Form eines Aktivitätsdiagramms (\autoref{fig:PNGActivity}, Seite
 \pageref{fig:PNGActivity}) abgebildet habe.
 
@@ -157,6 +230,7 @@ Im folgenden werden Sequenzdiagramme angegeben, welche Funktionalitäten abbilde
 die nicht von Meteor-Standardfunktionen (wie z.B. Login/Logout) abgedeckt sind.
 
 \subsection{[03] Kunde anlegen}
+\label{ch:SystemEntwurf:03}
 
 \begin{figure}[H]
   \includegraphics[width=0.9\textwidth]{gfx/03-kunde-anlegen.pdf}
@@ -165,6 +239,7 @@ die nicht von Meteor-Standardfunktionen (wie z.B. Login/Logout) abgedeckt sind.
 \end{figure}
 
 \subsection{[04] Kunde bearbeiten}
+\label{ch:SystemEntwurf:04}
 
 \begin{figure}[H]
   \includegraphics[width=0.9\textwidth]{gfx/04-kunde-bearbeiten.pdf}
@@ -173,6 +248,7 @@ die nicht von Meteor-Standardfunktionen (wie z.B. Login/Logout) abgedeckt sind.
 \end{figure}
 
 \subsection{[05] Überwachungsauftrag erstellen}
+\label{ch:SystemEntwurf:05}
 
 \begin{figure}[H]
   \includegraphics[width=0.9\textwidth]{gfx/05-uberwachungsauftrag-erstellen.pdf}
@@ -181,6 +257,7 @@ die nicht von Meteor-Standardfunktionen (wie z.B. Login/Logout) abgedeckt sind.
 \end{figure}
 
 \subsection{[06] Suchprofil erstellen}
+\label{ch:SystemEntwurf:06}
 
 \begin{figure}[H]
   \includegraphics[width=0.9\textwidth]{gfx/06-suchprofil-erstellen.pdf}
@@ -189,6 +266,7 @@ die nicht von Meteor-Standardfunktionen (wie z.B. Login/Logout) abgedeckt sind.
 \end{figure}
 
 \subsection{[07] Trefferlisten erstellen}
+\label{ch:SystemEntwurf:07}
 
 \begin{figure}[H]
   \includegraphics[width=0.9\textwidth]{gfx/07-trefferlisten-erstellen.pdf}
