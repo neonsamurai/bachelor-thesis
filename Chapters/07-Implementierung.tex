@@ -2,14 +2,337 @@
 
 \chapter{Implementierung} % Chapter title
 
-\label{ch:implementierung} % For referencing the chapter elsewhere, use \autoref{ch:introduction}
+\label{ch:implementierung}
 
-%----------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
 
-Selbstverständlich sollte Realisierung auch in Ihrer Arbeit abgehandelt werden.
-Aus der Sicht der Softwaretechnik stellt sie aber nur der kronende Abschluß der
-Arbeit dar. Hier können die realisierungsspezifischen Probleme (z.B. mit der
-Implementierungssprache) und das Testkonzept inkl. der protokollierten
-Testergebnisse dargestellt werden. Wichtige, komplexe oder besonders
-interessante Systemteile können auch im Programmcode dargestellt werden. Bitte
-aber Hinweis 12 (Programm-Listings) beachten!
+Die Implementierung erfolgte auf Basis der Plattform Meteor. Da Meteor die aus
+anderen Plattformen wie Java Enterprise, ASP.net oder Python/Django bekannte
+Trennung von Client und Server auflöst, war es nötig in der
+Implementierunsarbeit neue Wege zu finden, um eine saubere Softwarearchitektur
+zu ermöglichen. Die  wesentlichen Maßnahmen hierzu, sowie die generelle
+Vorgehensweise sollen in diesem Kapitel diskutiert werden.
+
+Der Stand der Implementierung zum Zeitpunkt der Erstellung dieser Arbeit ist
+unvollständig. Die Analyse der Anforderungen sowie der Entwurf des Systems wurde
+immer wieder verzögert. Behinderungsfaktoren waren zum Einen
+Terminschwierigkeiten mit den beteiligten Produktverantwortlichen, zum anderen
+zunächst unscharfe und später wechselnde Anforderungen an das System. Dies
+führte schlussendlich dazu, dass für die Implementierung nur etwa vier Wochen zu
+Verfügung standen.
+
+\section{Meteorspezifika}
+
+Die Meteorplattform kommt mit einem eigenen Buildsystem, welches den Quellcode
+packt, minimiert und für die Integration auf einem Node.js-Server bereit macht.
+Damit dieses System wie erwartet funktioniert muss der Entwickler einigen
+Konventionen bei der Wahl der Verzeichnisse beachten, da bestimmte Verzeichnisse
+nur auf dem Client, nur auf dem Server oder aber auf beiden Seiten ausgeliefert
+werden. Zudem werden die Verzeichnisse in einer bestimmten Reihenfolge geladen,
+was bei Codefragmenten wichtig werden kann, die von einander Abhängig sind.
+
+\begin{description}
+  \item[server]{Wird nur an den Server ausgeliefert}
+  \item[client]{Wird nur an de Client ausgeliefert}
+  \item[tests]{Wird nur in der Testkonfiguration ausgeliefert}
+  \item[lib]{Wird in einer Verzeichnisebene zuerst geladen}
+\end{description}
+
+Alle übrigen Verzeichnisse werden auf Client und Server ausgeliefert. Dateien
+und Verzeichnisse werden, beginnend mit der tiefsten Verzeichnisebene, in
+alphabetischer Reihenfolge geladen.
+
+Ich folgte bei meiner Implementierung den Konventionen aus dem "`Unofficial
+Meteor FAQ"' \cite{meteor-faq}, welche hier kurz als Beispielverzeichnisbaum
+dargestellt werden soll.
+
+\section{Vorgehensweise}
+
+Um die Reihenfolge der zu implementierenden Anforderungen zu bestimmen, nahm ich
+die erstellten User Stories und sortierte sie zunächst nach den wichtigsten bzw.
+am schwierigsten zu implementierenden User Stories. Die mir am wichtigsten
+erscheinende User Story ist \nameref{ch:SystemEntwurf:07} (Seite
+\pageref{ch:SystemEntwurf:07}), da die Trefferliste den eigentlichen Mehrwert
+der Dienstleistung Deparom-Profil und somit den zentralen Use Case darstellt.
+
+Damit diese User Story realisiert werden kann identifizierte ich andere User
+Stories, die als Vorraussetzung gelten.
+
+\begin{enumerate}
+  \item{\nameref{ch:SystemEntwurf:03}, Seite \pageref{ch:SystemEntwurf:03}}
+  \item{\nameref{ch:SystemEntwurf:04}, Seite \pageref{ch:SystemEntwurf:04}}
+  \item{\nameref{ch:SystemEntwurf:05}, Seite \pageref{ch:SystemEntwurf:05}}
+  \item{\nameref{ch:SystemEntwurf:06}, Seite \pageref{ch:SystemEntwurf:06}}
+\end{enumerate}
+
+Bei der eigentlichen Implementierungsarbeit folgte ich den Prinzipien der
+testgetriebenen Entwicklung \cite{tdd}, bei der zunächst ein programmatischer
+Test die gewünschte Funktionalität prüft. Natürlicherweise scheitert dieser
+Test, da die notwendige Implementierung fehlt.
+
+Anschließend wird die fehlende Implementierung erarbeitet, bis der Test
+erfolgreich verläuft.
+
+Man beginnt nun mit dem nächsten Test und macht immer so weiter.
+
+\subsection{Testgetriebene Entwicklung mit Meteor}
+
+Für die testgetriebene Entwicklung stellt Meteor ein Testframework namens
+Velocity \cite{velocity} bereit. Das Framework nutzt die Reaktivität von Meteor,
+überwacht den Quellcode und lässt alle vorhandenen Tests ablaufen, sobald eine
+geänderte Quelldatei gespeichert wird. Hierdurch kann sich der Entwickler auf
+die Implementierung konzentrieren, da das Neuladen und Testen der Anwendung vom
+Framework automatisch durchgeführt wird. Als Entwickler muss man nur noch die
+Testergebnisse überprüfen.
+
+Velocity unterstützt verschiedene Testbibliotheken. Ich verwendete Jasmine 2.1
+\cite{jasmine}, eine Bibliothek die Unit und Integration Tests ermöglicht.
+Jasmine ermöglicht das Schreiben von Tests sowohl für den Client, als auch für
+den Server.
+
+\section{Tests}
+
+Dem Testen der Anwendung wurde viel Aufmerksamkeit und Entwicklungszeit
+gewidmet. Aus diesem Grunde sollen einige Tests im Detail besprochen werden, um
+die Besonderheiten beim Testen von Meteor-Applikationen aufzuzeigen.
+
+\subsection{Unit Tests}
+
+Bei den Tests konzentrierte ich mich vor allem auf die das Fachklassenmodell.
+Eine vollständige Abdeckung meines Quellcodes mit Tests ist zwar erstrebenswert,
+im Hinblick auf die Zeitbeschränkungen jedoch nicht zielführend.
+
+Exemplarisch soll hier die Unit-Testsuite für die Customers-Klasse diskutiert
+werden.
+
+\lstinputlisting[caption=Unit Tests für Customers-Klasse]{/Users/timjagodzinski/src/don.ng/profil-ng/tests/jasmine/server/unit/customerModelSpec.js}
+
+Ab Zeile 7 im obigen Listing wird mit der Funktion \textit{spyOn} ein sog. Spy
+definiert. Ein Spy überwacht ein Objekt und protokolliert die Zugriffe auf das
+Objekt. Auf das Protokoll kann zugegriffen werden, um das Verhalten der
+Anwendung zu testen. Darüber hinaus ist es möglich, Funktionen zu definieren,
+die aufgerufen werden, wenn ein überwachtes Objekt auf eine bestimmte Art und
+Weise aufgerufen wird.
+
+Diese Funktionalität wird im obigen Listing verwendet, um den Callback des
+Aufrufs von Meteor.call() zu simulieren. Dies wird durch die Verkettung des
+\textit{spyOn}-Aufrufs mit den Methoden \textit{.and.callFake()} erreicht, wobei
+\textit{callFake} als Parameter die gewünschte Funktion entgegennimmt.
+
+In der vorliegenden Implementierung wird nur der \textit{callback} mit den
+Argumenten \textit{null}, \textit{1} aufgerufen. So wird simuliert, dass die
+Meteor.method \textit{customerSave} ein leeres \textit{error}-Objekt und die ID
+des neu hinzugefügten Customer-Objekts zurückgibt.
+
+Die folgenden Zeilen bis Zeile 20 definieren ein Testdatenobjekt, anhand dem die
+Konstruktorfunktion in Zeile 24 aufgerufen wird.
+
+Ab Zeile 26 wird dann überprüft, ob der Inhalt der Felder des
+\textit{customer}-Objekts denen des Testdatenobjekts entspricht. Dabei
+referenziere ich auf das Testdatenobjekt und vermeide Verwendung von Literalen,
+um die Vergleiche zu machen. Dies soll Fehler durch Tippfehler vermeiden.
+
+Eine frühere Version dieses Tests nutzte zum Prüfen der Feldwerte des
+\textit{customer}-Objekts Literale. Dabei unterlief mir ein Tippfehler und der
+Test schlug fehl. Daraufhin führte ich eine Refakturierung auf die oben
+abgebildete Version durch und vermied es auch in den weiteren Tests, Literale
+zur Prüfung zu verwenden.
+
+\subsection{Integration Tests}
+
+Um das Zusammenspiel der einzelnen Komponenten der Anwendung zu testen, bedient
+man sich der Integrationstests. Diese werden verwendet, um die Schnittstellen
+der verwendeten Module zu testen, aber auch um das Zusammenspiel von Front- und
+Backend zu testen, sowie das Verhalten der Clientapplikation in Bezug auf
+Anwenderinteraktion.
+
+Bei der Implementierungsarbeit für Profil.NG nutzte ich Integrationstests, um die
+Routenkonfiguration zu testen. Hierbei war mir besonders wichtig sicherzustellen,
+dass geschützte Routen nur für angemeldete Benutzer sichtbar sind.
+
+Darüber hinaus habe ich die Beschaffenheit von Templates, insbesondere von
+Formularen überprüft, sowie das Eventhandling auf den Routen.
+
+Exemplarisch sollen hier die Tests für die Routen und Controller diskutiert
+werden, welche für das Erstellen und Bearbeiten von Customer-Objekten zuständig
+sind.
+
+Da Integrationstests auf einer echten Instanz der Anwendung laufen, ist es
+notwendig Testdaten vorzubereiten, die von der Anwendung verwendet werden
+können. Insbesondere ist es nötig, ein Benutzerkonto anzugeben, damit sich der
+virtuelle Anwender bei der Applikation authentifizieren kann.
+
+Zu diesem Zweck wird eine Funktion definiert, welche aufgerufen wird, wenn die
+Anwendung gestartet in der Testkonfiguration gestartet wird. Im folgenden
+Listing ist zu sehen, wie des Testbenutzerkonto in der Funktion
+\textit{loadDefaultFixtures()} definiert wird.
+
+\lstinputlisting[firstline=50,caption=Fixtures für Integrationstests]{/Users/timjagodzinski/src/don.ng/profil-ng/tests/jasmine/server/integration/fixtures/database-fixture.js}
+
+Die Testsuite für die Route, die für das Hinzufügen von Customer-Objekten
+verwendet wird soll im Folgenden beschrieben werden.
+
+\lstinputlisting[caption=Integrationstest für Kunde-Speichern-Formular]{/Users/timjagodzinski/src/don.ng/profil-ng/tests/jasmine/client/integration/customers/customersAddSpec.js}
+
+Als erstes wird geprüft, ob die geforderte Route unter dem geforderten Namen
+\textit{customersAdd} existiert und ob diese zur URL \textit{/customers/add}
+führt.
+
+\begin{lstlisting}[caption=Test auf Existenz der Route 'customersAdd']
+  describe("route", function() {
+    it("should be at path '/customers/add'", function() {
+      expect(Router.routes["customersAdd"].path()).toBe(
+        "/customers/add");
+    });
+  });
+\end{lstlisting}
+
+Dieser Test ist wichtig, um die generelle Routenkonfiguration der Anwendung zu
+validieren. Falsche Routen, Pfade oder geänderte Routen sind häufige
+Fehlerquellen in meiner Entwicklungsarbeit gewesen. Insbesondere bei steigender
+Komplexität der Anwendung ist eine einwandfreie Routenkonfiguration wichtig, um
+Doppelbelegungen von URLs oder die falsche Verwendung von Routen zu vermeiden.
+
+Der eigentliche Test wird in der Testsuite \textit{view} beschrieben. Anzumerken ist hier
+zunächst der Block mit den Aufrufen von \textit{beforeEach()} und \textit{afterEach} der im
+folgenden Listing dargestellt ist.
+
+\begin{lstlisting}[caption=Vor- und Nachtestkonfiguration]
+  beforeEach(function(done) {
+      Meteor.loginWithPassword("ops@profil.ng", "start1234",
+        function(
+          error) {
+          done();
+        });
+    });
+
+    beforeEach(function(done) {
+      Router.go("/customers/add");
+      Tracker.afterFlush(done);
+    });
+
+    beforeEach(waitForRouter);
+
+    afterEach(function(done) {
+      Meteor.logout(function() {
+        done();
+      });
+    });
+\end{lstlisting}
+
+Die \textit{beforEach()}-Aufrufe werden vor jedem Test ausgeführt. Sie enthalten
+für gewöhnlich Konfiguration und Abläufe, die für die kommenden Test wichtig
+sind. In der vorliegenden Implementierung meldet sich der Testclient mit den
+Nutzerdaten an, die in der Fixture schon definiert wurden. Anschließend wird der
+Router aufgerufen und ändert die URL auf den vorher getesten Wert. Mit
+\textit{beforeEach(waitForRouter);} wartet der Testclient darauf, dass die Seite
+vollständig geladen ist, um  sicherzustellen dass der DOM vollstaändig ist. So
+wird gewährleitet, dass die folgenden Tests, welche nach bestimmten
+DOM-Elementen suchen auch erfolgreich ablaufen können.
+
+Der Rest der Testsuite befasst sich mit dem eigenlichen Formular und überprüft,
+ob alle erforderlichen Formularfelder und Schaltflächen vorhanden sind.
+
+Mit Integrationstests kann auch das Verhalten der Anwendung bei Benutzerinteraktion
+getestet werden. Hierfür soll zur Demonstration ein Auszug aus der Testsuite des
+Controllers für die Route \textit{customersAdd} dienen.
+
+\begin{lstlisting}[caption=Test des Verhaltens bei Benutzereingabe]
+  it("should save the form contents to a new customer object on submit",
+		function() {
+			var customer;
+
+			fillForm();
+			spyOn(Customers, "insert");
+
+			$(".ui.form.segment").form().submit();
+			expect(Customers.insert).toHaveBeenCalled();
+			expect(Customers.insert).not.toThrow();
+		});
+\end{lstlisting}
+
+Mit der Hilfsfunktion \textit{fillForm()} wird zunächst das HTML-Formular mit
+Daten gefüllt. Dies geschieht unter Zuhilfname der DOM-Manipulationsbibliothek
+jQuery. Anschließend wird ein Submit-Event mittels jQuery ausgelöst, der
+wiederum die Datenbankoperation zum Speichern des Customer-Objekts auslösen
+soll. Das verhalten wird mit den beiden \textit{expect()}-Aufrufen überprüft.
+
+Bei dieser Art Test ist es wichtig, das gewünschte Ergebnis abzutesten. In
+diesem Fall der Aufruf der Insert-Methode auf der Customers-Collection. Der Weg
+dort hin, also die eigentliche Implementierung sollte nicht abgetestet werden.
+Dies würde dazu führen, dass bei Änderungen in der Implementierung der Test ggf.
+scheitert, obwohl die Implementierung immer noch das gewünschte Ergebnis
+liefert. Man spricht in diesem Fall von sogenannten "`brittle"' Tests
+\cite{brittle-tests}.
+
+\section{Fachklassen}
+
+Sowohl auf Client als auch auf dem Server existiert das eigentliche Model in
+Form einer Konstruktorfunktion, welche das jeweilige Model beschreibt. Objekte
+die aus diesen Konstruktorfunktion erstellt werden rufen ihrerseits
+Meteor.methods auf, wenn sie Datenbankoperationen veranlassen sollen. Diese
+werden zum Zwecke der leichteren Zuordnung direkt neben den
+Konstruktorfunktionen, also in der gleichen Datei definiert.
+
+Die verschiedenen Modelle der Geschäftslogik sind im Verzeichnis \textit{models}
+gesammelt.
+
+Die Modelle enthalten vor allem CRUD-Operationen und sollen wegen ihrer
+Einfachheit hier nicht näher erlautert werden.
+
+\section{Publications und Subscriptions}
+
+Meteor verwendet einen besonderen Mechanismus, um Daten vom Server zu Beziehen.
+Da Meteor nicht dem klassischen Zyklus von Anfrage und Antwort des
+HTTP-Protokolls folgt, sondern Daten per Websockets direkt an den Client
+überträgt ist es erforderlich, Endpunkte auf dem Server zu definieren, an denen
+sich ein Client anmelden kann, um Daten zu beziehen. Diese Endpunkte werden bei
+Meteor \textit{Publications} genannt. Mittels einer Publication wird eine
+Funktion  definiert welche einen oder mehrere Datenbankcursors zurückliefert,
+welche dann vom Client genutzt werden können, um Daten abzurufen.
+
+Die Publications für das Customer-Modell sehen wie folgt aus:
+
+\lstinputlisting[caption=Definition der Publication für die Customers-Collection]{server/publications/customersPublications.js}
+
+Ein Client kann sich an diese Publications anmelden. Dafür muss der Methode
+\textit{Meteor.subscribe()} der Name der Publication, sowie ggf. nötige
+Parameter übergeben werden. Als Rückgabewert erhält man einen
+Subscription-Handle, mittels dem man dann die eigentlichen Daten beziehen kann.
+
+Dieses Modell verleitet zunächst dazu, sehr weit gefasste Publications zu
+schreiben, damit alle Daten, die zu einem Benutzer gehören auf den Client
+synchronisiert werden, und dieser mit allen Daten lokal Arbeiten kann. Bei kleineren
+Datenmengen ist dies noch ein gangbarer Weg. Aber bei großen Datenmengen wird diese
+Vorgehensweise zu einem Performanceproblem.
+
+Auf der Clientseite kann der initiale Aufruf der Anwendung mit einer sehr langen
+Ladezeit verbunden sein, da erst alle Daten synchronisiert sein müssen, bevor
+die Anwendung gestartet werden kann. Auf der Serverseite führen weit gefasste
+Publications zu einem sehr großen Arbeitsspeicherverbrauch, da der
+Node.js-Server alle Daten im Speicher behält, die in einer Pulication an einen
+bestimmten Client ausgeliefert wurden. Dies ist notwendig, damit der Server bei
+Änderungen in der Datenbank einen Abgleich ausführen kann, damit nur ein
+Datenpatch und nicht der komplette Datensatz an den Client geschickt werden
+müssen.
+
+Aus diesem Grunde gilt der Grundsatz der Datensparsamkeit beim Entwurf von
+Publications und beim Einsatz von Subscriptions. In der Implementierung der
+Routecontroller wurde deshalb darauf geachtet, nur Subscriptions anzumelden, die
+für die aktuelle Route relevant sind. Siehe dazu folgendes Listing.
+
+\begin{lstlisting}[caption=Auszug aus Routecontroller für Route 'customers']
+Router.route('/customers', function() {
+  	this.render('Customers');
+  }, {
+  	name: 'customers',
+  	waitOn: function() {
+  		Meteor.subscribe("getCustomersList");
+  	},
+  	data: function() {
+  		return {
+  			customers: Customers.find().fetch()
+  		};
+  	}
+});
+\end{lstlisting}
