@@ -69,7 +69,7 @@ Java-API.
 \label{ch:fachlichesUmfeld:Technologien:SpringBoot}
 
 Spring Boot ist ein Java-Framework für Spring-IO-Anwendungen, welches auf dem
-Prinzip "Konvention über Konfiguration" beruht. Es ist darauf ausgelegt,
+Prinzip "`Konvention über Konfiguration"' beruht. Es ist darauf ausgelegt,
 eigenständige Spring-IO-Anwendungen in möglichst kurzer Zeit zu erstellen.
 Hierfür wird zum Beispiel ein Tomcat direkt eingebettet, so dass die  hierfür
 notwendige Konfiguration entfällt. Weiterhin wird Spring-IO wann immer möglich
@@ -155,13 +155,17 @@ Der sogenannte Simple Reference Store bildet den zentralen Datenspeicher von
 DEPAROM.NG. Hier werden die Daten zu jedem Patentdokument gespeichert. Hierzu
 gehören sowohl die originalen Dateien, wie sie von den jeweiligen Patentämtern
 bezogen wurden, als auch normalisierte Daten im JSON und XML-Format. Das
-normalisierte Format wird MTC-Format genannt. In \autoref{fig:SRSImport}, Seite
-\pageref{fig:SRSImport} ist schematisch  der Datenstrom und die beteiligten
-Softwarekomponenten aufgezeigt. Nachdem die Daten aus dem Patent-XML nach JSON
-überführt wurden, werden auch die übrigen Artefakte (Zeichnungen, Faksimile)
-extrahiert und auf einem Dateiserver abgelegt. SRS stellt auch diese Bild- und
-PDF-Dateien bereit. Der Zugriff erfolgt über eine REST-Schnittstelle. Die
-JSON-Formate werden in Elasticsearch gespeichert, indiziert und suchbar gemacht.
+normalisierte Format wird MTC-Format genannt.
+
+Der Import geschieht durch den SRS-Client, einer Kommandozeilenanwendung, welche
+die Quelldaten der Patentämter für den Import nach SRS vorbereitet und dann an
+SRS sendert. In \autoref{fig:SRSImport}, Seite \pageref{fig:SRSImport} ist
+schematisch  der Datenstrom und die beteiligten Softwarekomponenten aufgezeigt.
+Nachdem die Daten aus dem Patent-XML nach JSON überführt wurden, werden auch die
+übrigen Artefakte (Zeichnungen, Faksimile) extrahiert und auf einem Dateiserver
+abgelegt. SRS stellt auch diese Bild- und PDF-Dateien bereit. Der Zugriff
+erfolgt über eine REST-Schnittstelle. Die JSON-Formate werden in Elasticsearch
+gespeichert, indiziert und suchbar gemacht.
 
 \begin{figure}[h]
   \includegraphics[width=0.9\textwidth]{gfx/srs-import.pdf}
@@ -193,8 +197,8 @@ identifizieren kann, die in ein Ausgabeformat exportiert werden sollen.
 \subsection{Profil.NG (PNG)}
 \label{ch:fachlichesUmfeld:Teilsysteme:PNG}
 
-Die Anwendung zur Steuerung des wöchentlichen Produktionsprozesses für den
-Patentinformationsdienst DEPAROM Profil. PNG ist Gegenstand dieser
+Dies ist die Anwendung zur Steuerung des wöchentlichen Produktionsprozesses für
+den Patentinformationsdienst DEPAROM Profil. PNG ist Gegenstand dieser
 Bachelorarbeit. Sie soll die Operatoren befähigen, die
 Patentinformationslieferungen zu produzieren und Abrechnungsdaten für die
 Buchhaltung und Rechnungstellung zu generieren.

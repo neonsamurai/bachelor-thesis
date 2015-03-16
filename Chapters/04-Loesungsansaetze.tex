@@ -30,13 +30,13 @@ welche die einzelnen Produktionsdaten für jede Kalenderwoche enthält. Das
 Perlscript kann nur Produktionsdaten etwa 12 Monate im voraus generieren. Läuft
 der aktuelle Produktionsplan aus, muss das Skript neu angestoßen werden, mit den
 Parametern für den neuen Produktionszyklus. Wird dies vergessen, kommt es zu
-Fehlerzustaänden, die nur durch Entwickler behoben werden können.
+Fehlerzuständen, die nur durch Entwickler behoben werden können.
 
 Um diesen Umstand zu umgehen, soll ein wochenbasierter Kalender implementiert
 werden, welcher die Produktionsereignisse verwaltet, so dass die Operatoren sich
 nicht mehr um den Produktionsplan kümmern müssen.
 
-Die Verwaltung der sich wiederholenden Ereignisse ist niht ganz trivial und ich
+Die Verwaltung der sich wiederholenden Ereignisse ist nicht ganz trivial und ich
 möchte einige Lösungsideen diskutieren.
 
 \subsection{Der berechnete Kalender}
@@ -58,8 +58,8 @@ Patentinformationslieferung erneut produzieren kann.
 
 Da die Anforderungen das Modell des berechneten Kalenders übersteigen, und
 ohnehin zu jedem Produktionsereignis weitere Daten gespeichert werden müssen
-verwarf ich dieses Modell zugunsten eines Modells, das ich "Persistierter
-Kalender" nenne.
+verwarf ich dieses Modell zugunsten eines Modells, das ich "`Persistierter
+Kalender"' nenne.
 
 \subsection{Der persistierte Kalender}
 \label{ch:Lösungsansätze:Produktionsplan:PersistierteKalender}
@@ -79,7 +79,7 @@ beliebige Metadaten zu jedem Produktionslauf gespeichert werden.
 Bei der Erstellung eines Suchauftrages müssen allerdings alle
 Produktionsereignisse über den Überwachungszeitraum berechnet, erstellt und
 gespeichert werden. Dies kann abhängig von Dauer und Häufigkeit der
-Patentüberachung zu einer großen Zahl an Datenbankoerationen führen. Zudem ist
+Patentüberachung zu einer großen Zahl an Datenbankoperationen führen. Zudem ist
 noch ungeklärt, wie mit Suchaufträgen umgegangen werden soll, die kein
 Ablaufdatum besitzen.
 
