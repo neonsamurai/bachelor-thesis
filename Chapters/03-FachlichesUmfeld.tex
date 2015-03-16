@@ -17,7 +17,8 @@ Fachbegriffe aus dem Bereich Patente/Schutzrecht beschreiben.
 
 Ein Patent ist eine Art gesellschaftlicher Vertrag, durch den man rechtlichen
 Schutz für eine Erfindung erhalten kann. Durch das Patent erlangt der Erfinder
-das alleinige Nutzungsrecht für seine Innovation. Im Gegenzug muss die Erfindung
+das alleinige Nutzungsrecht für seine Innovation über einen gewissen Zeitraum,
+in Deutschland bspw. über 20 Jahre. \cite{patent} Im Gegenzug muss die Erfindung
 aber in Form der Patentschrift für die Allgemeinheit zugänglich gemacht werden.
 Patente sollen der Innovationsförderung dienen, in dem Sie sowohl dem Erfinder,
 als auch der Allgemeinheit Vorteile verschaffen.
@@ -39,14 +40,14 @@ des Patents.
 Erfinder und vor allem Technologieunternehmen verwenden Patentüberwachung für
 zwei Zwecke:
 
-Zum Schutz ihres eigenen Patentportfolios. Sie überwachen dasselbe
+Zum einen schützen sie ihre eigenen bestehenden Patente. Sie überwachen dasselbe
 Technologiefeld und konkurrierende Anmelder, um Patente zu finden, welche die
 eigenen Schutzrechte verletzen.
 
-Zum Schutz der eigenen Forschungsinvestitionen. Sie überwachen Technologiefelder
-der  zu entwickelnden Erfindung und ggf. konkurrierende Unternehmen, um zu
-gewährleisten dass die neue Erfindung nicht bereits bestehende Schutzrechte
-verletzt.
+Zum anderen schützen sie die eigenen Forschungsinvestitionen. Sie überwachen
+Technologiefelder der zu entwickelnden Erfindung und ggf. konkurrierende
+Unternehmen, um zu gewährleisten dass die neue Erfindung nicht bereits
+bestehende Schutzrechte verletzt.
 
 \section{Technologien}
 \label{ch:fachlichesUmfeld:Technologien}
@@ -58,32 +59,33 @@ Technologien sollen im Folgendem kurz umschrieben werden.
 \subsection{Elasticsearch}
 \label{ch:fachlichesUmfeld:Technologien:Elastichsearch}
 
-Eine dokumentbasierte nichtrelationale Datenbank mit mächtiger integrierter
-Suchmaschine. Als Basistechnologie verwendet sie die in Java geschriebene
-Suchtechnologie Lucene \cite{lucene}. Als Ein- und Ausgabeformat wird JSON
-verwendet. Der Zugriff erfolgt über eine REST-Schnittstelle oder eine Java-API.
+Elasticsearch ist eine dokumentbasierte nichtrelationale Datenbank mit mächtiger
+integrierter Suchmaschine. Als Basistechnologie verwendet sie die in Java
+geschriebene Suchtechnologie Lucene \cite{lucene}. Als Ein- und Ausgabeformat
+wird JSON verwendet. Der Zugriff erfolgt über eine REST-Schnittstelle oder eine
+Java-API.
 
 \subsection{Spring Boot}
 \label{ch:fachlichesUmfeld:Technologien:SpringBoot}
 
-Java-Framework für Spring-IO-Anwendungen, welches auf dem Prinzip "Konvention
-über Konfiguration" beruht. Es ist darauf ausgelegt, eigenständige
-Spring-IO-Anwendungen in möglichst kurzer Zeit zu erstellen. Hierfür wird zum
-Beispiel ein Tomcat direkt eingebettet, so dass die  hierfür notwendige
-Konfiguration entfällt. Weiterhin wird Spring-IO wann immer möglich automatisch
-konfiguriert.
+Spring Boot ist ein Java-Framework für Spring-IO-Anwendungen, welches auf dem
+Prinzip "Konvention über Konfiguration" beruht. Es ist darauf ausgelegt,
+eigenständige Spring-IO-Anwendungen in möglichst kurzer Zeit zu erstellen.
+Hierfür wird zum Beispiel ein Tomcat direkt eingebettet, so dass die  hierfür
+notwendige Konfiguration entfällt. Weiterhin wird Spring-IO wann immer möglich
+automatisch konfiguriert.
 
 \subsection{Spring-IO}
 \label{ch:fachlichesUmfeld:Technologien:Spring}
 
-Java-Plattform für Enterprise-Webanwendungen. Spring-IO bietet Java-APIs für
-alle Schichten von der Serverlogik über die Datenbankzugriffe bis hin zum
-clientseitigen Frontend.
+Spring-IO ist eine Java-Plattform für Enterprise-Webanwendungen. Spring-IO bietet
+Java-APIs für alle Schichten von der Serverlogik über die Datenbankzugriffe bis
+hin zum clientseitigen Frontend.
 
 \subsection{Meteor}
 \label{ch:fachlichesUmfeld:Technologien:Meteor}
 
-JavaScript-Plattform für Webanwendungen. Meteor bietet eine isomorphe
+Meteor ist eine JavaScript-Plattform für Webanwendungen. Meteor bietet eine isomorphe
 JavaScript-API  für Front- und Backend, vollständige Reaktivität durch alle
 Schichten, ein Paketierungssystem für zusätzliche Module, eine
 Datenbankabstraktion für die Datenbank MongoDB sowie ein Buildsystem, welches in
@@ -93,18 +95,20 @@ Derzeit werden hier Node.js, Android und iOS unterstützt.
 \subsection{MongoDB}
 \label{ch:fachlichesUmfeld:Technologien:MongoDB}
 
-Nichtrelationale dokumentbasierte Datenbank. Als Ein- und Ausgabedatenformat
-wird JSON verwendet. Intern werden die Daten im Format Binary JavaScript Object
-Notation (BSON) gespeichert. Die Datenbank kann auch geospatiale Indizes
-erstellen und als verteilter Dateispeicher (GridFS) benutzt werden.
+MongoDB ist eine quelloffene nichtrelationale dokumentbasierte Datenbank. Als
+Ein- und Ausgabedatenformat wird JSON verwendet. Intern werden die Daten im
+Format Binary JavaScript Object Notation (BSON) gespeichert. Die Datenbank kann
+auch geospatiale Indizes erstellen und als verteilter Dateispeicher (GridFS)
+benutzt werden.
 
 \subsection{Node.js}
 \label{ch:fachlichesUmfeld:Technologien:Node.js}
 
-JavaScript-Plattform für Serveranwendungen, welche die Laufzeitumgebung von
-Google Chrome als Interpreter verwendet. Sie beruht auf einem nichtblockierendem
-Ein-/Ausgabeprinzip unter Zuhilfenahme von Callbacks, um eine gut skalierbare
-Umgebung für datenintensive verteilte Anwendungen zu bieten.
+Node.js ist eine JavaScript-Plattform für Serveranwendungen, welche die
+Laufzeitumgebung von Google Chrome als Interpreter verwendet. Sie beruht auf
+einem nichtblockierendem Ein-/Ausgabeprinzip unter Zuhilfenahme von Callbacks,
+um eine gut skalierbare Umgebung für datenintensive verteilte Anwendungen zu
+bieten. Meteor basiert im Kern auf Node.js.
 
 \section{Teilsysteme}
 \label{ch:fachlichesUmfeld:Teilsysteme}
@@ -129,12 +133,12 @@ zur Produktion der Datenträger für die Kunden führt.
   \label{fig:DNGOverview}
 \end{figure}
 
-Die \autoref{fig:DNGOverview} zeigt schematisch das Zusammenspiel der
-verschiedenen Webdienste im DEPAROM.NG-Ökosystem. Patentdaten werden als
-.zip-Dateien vom SRS-Client an den Simple Reference Store übermittelt. Dieser
-verarbeitet die Patentdaten und speichert sie in normalisierter Form ab. Wo
-notwendig, fordert der SRS beim DEPAROM Satz Service (DSS) die Erstellung von
-Patentschriften im PDF-Format an.
+Die \autoref{fig:DNGOverview}, Seite \pageref{fig:DNGOverview} zeigt schematisch
+das Zusammenspiel der verschiedenen Webdienste im DEPAROM.NG-Ökosystem.
+Patentdaten werden als .zip-Dateien vom SRS-Client an den Simple Reference Store
+übermittelt. Dieser verarbeitet die Patentdaten und speichert sie in
+normalisierter Form ab. Wo notwendig, fordert der SRS beim DEPAROM Satz Service
+(DSS) die Erstellung von Patentschriften im PDF-Format an.
 
 Für die Produktion der Kundendatenträger sendet Profil.NG (PNG) eine Suchanfrage
 an den SRS (1.). Dieser antwortet mit einer Dokumentliste, welche die
@@ -151,13 +155,13 @@ Der sogenannte Simple Reference Store bildet den zentralen Datenspeicher von
 DEPAROM.NG. Hier werden die Daten zu jedem Patentdokument gespeichert. Hierzu
 gehören sowohl die originalen Dateien, wie sie von den jeweiligen Patentämtern
 bezogen wurden, als auch normalisierte Daten im JSON und XML-Format. Das
-normalisierte Format wird MTC-Format genannt. In \autoref{fig:SRSImport} ist
-schematisch  der Datenstrom und die beteiligten Softwarekomponenten aufgezeigt.
-Nachdem die Daten aus dem Patent-XML nach JSON überführt wurden, werden auch die
-übrigen Artefakte (Zeichnungen, Faksimile) extrahiert und auf einem Dateiserver
-abgelegt. SRS stellt auch diese Bild- und PDF-Dateien bereit. Der Zugriff
-erfolgt über eine REST-Schnittstelle. Die JSON-Formate werden in Elasticsearch
-gespeichert, indiziert und suchbar gemacht.
+normalisierte Format wird MTC-Format genannt. In \autoref{fig:SRSImport}, Seite
+\pageref{fig:SRSImport} ist schematisch  der Datenstrom und die beteiligten
+Softwarekomponenten aufgezeigt. Nachdem die Daten aus dem Patent-XML nach JSON
+überführt wurden, werden auch die übrigen Artefakte (Zeichnungen, Faksimile)
+extrahiert und auf einem Dateiserver abgelegt. SRS stellt auch diese Bild- und
+PDF-Dateien bereit. Der Zugriff erfolgt über eine REST-Schnittstelle. Die
+JSON-Formate werden in Elasticsearch gespeichert, indiziert und suchbar gemacht.
 
 \begin{figure}[h]
   \includegraphics[width=0.9\textwidth]{gfx/srs-import.pdf}
@@ -165,10 +169,10 @@ gespeichert, indiziert und suchbar gemacht.
   \label{fig:SRSImport}
 \end{figure}
 
-SRS stellt auch eine Schnittstelle für Suchanfragen bereit, welche Patentdokumente
-in konfigurierbaren Formaten und Detailgraden zurückliefert.
+SRS stellt auch eine Schnittstelle für Suchanfragen bereit, welche
+Patentdokumente in konfigurierbaren Formaten und Detailgraden zurückliefert.
 
-\subsection{DEPAROM Satz Service}
+\subsection{DEPAROM Satz Service (DSS)}
 \label{ch:fachlichesUmfeld:Teilsysteme:DSS}
 
 Ein wichtiger Bestandteil der Patentinformationslieferungen aus DEPAROM.NG sind

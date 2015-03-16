@@ -2,21 +2,66 @@
 
 \chapter{Zusammenfassung und Ausblick} % Chapter title
 
-\label{ch:zusammenfassungUndAusblick} % For referencing the chapter elsewhere, use \autoref{ch:introduction} 
+\label{ch:zusammenfassungUndAusblick} % For referencing the chapter elsewhere, use \autoref{ch:introduction}
 
 %----------------------------------------------------------------------------------------
 
-Lehnen Sie sich zurück von Ihrem Terminal und versuchen ein wenig Abstand zu
-den vielen Detail-Problemen Ihrer Diplomarbeit zu gewinnen: 
 
-Was war wirklich wichtig bei der Arbeit? 
+Im Verlauf dieser Bachelorarbeit konnten die Anforderungen an das System
+\textit{Profil.NG} aus dem Vorgängersystem \textit{Profilanwendung} estrahiert,
+bereinigt und formuliert werden. Aus den Anforderungen  ließ sich ein für die
+Implementierung verwendbar Software-Entwurf ableiten, welcher für die
+Entwicklung des vorliegenden Prototyps benutzt wurde.
 
-Wie sieht das Ergebnis aus? 
+Die Analyse- und Entwurfsphase fiel dabei überraschend groß aus. Es war
+schwierig, die Anforderungen aus dem Vorgängersystem in einer ausreichenden
+Abstraktion herauszulösen und für Profil.NG zu formulieren. Erschwerend kamen
+Faktoren hinzu, die nicht im Bereich des Software-Engineering liegen. So waren
+die für die Ermittlung der Geschäftsprozesse nötigen Personen nicht immer
+zeitnah zu sprechen und es war zum Teil schwierig ihnen die Wichtigkeit ihrer
+Rolle begreiflich zu machen. Hieraus resultierten zunächst unscharfe
+Anforderungen, die sich im weiteren Verlauf des Projekts auch änderten. Hieraus
+resultierten Verzögerungen, die darin resultierten, dass verhältnismäßig wenig
+Implementierungszeit zu Verfügung stand.
 
-Wie schätzen Sie das Ergebnis ein? 
+Das gewählte Entwicklungsverfahren der testgetriebenen Entwicklung erwies sich
+zugleich als herausragend nützliches Werkzeug und als stärkste Bremse während
+der Implementierungsphase. Die besondere Denkweise bei der testgetriebenen
+Entwicklung und die geringe Erfahrung sowohl mit der Testbibliothek Jasmine als
+auch in der testgetriebenen Entwicklung im Allgemeinen und mit Meteor im
+speziellen erwiesen sich immer wieder als Implementierungsbremsen, da hier viel
+Forschungsarbeit geleistet werden musste. Da man bei der Implementierung aber
+gezwungen wird, sich zunächst über den gewünschten Effekt Gedanken zu machen und
+nicht gleich in Implementierungsdetails verrennt, erlangt man ein besseres
+Verständnis über die logische Problematik der Implementierung. Zudem kann man
+sich in der testgetriebenen Entwicklung relativ sicher sein, keine
+Implementierungsdetails vergessen zu haben, sobald alle Tests erfolgreich
+verlaufen.
 
-Gab es Randbedingungen, Ereignisse, die die Arbeit wesentlich beeinflußt haben? 
+In Ermangelung von ausreichend Implementierungszeit ist vor allem noch die
+Kommunitation mit den anderen Webdiensten im DEPAROM.NG-Gesamtsystem eine
+ungelöste Aufgabe. Meteor liefert mit \textit{http} eine Bibliothek, die für
+exakt diese Aufgabe entwickelt wurde. Eine Realisierung anhand von \textit{http}
+scheint daher keine besonders schwierige Aufgabe.
 
-Gibt es noch offene Probleme?
+Ein Problem ganz anderer Art ist die Schemavalidierung. Ein weitgehend
+ungelöstes Problem im Meteor-Ökosystem ist die Validierung von Eingabedaten
+gegen ein Dokumentschema. Durch die Definition solcher Schemata wäre es möglich,
+solche Validierungen in einer standadisierten Art und Weise durchzuführen. Auch
+wäre es möglich, Formulare für CRUD-Operationen programmatisch aus solchen
+Schemata zu generieren. Während der Bearbeitungszeit für diese Arbeit stieß ich
+leider erst recht spät auf eine Bibliothek, welche die Definition einfacher
+Schemata ermöglicht. Die Verwendung selbiger vermied ich, da mein Zeitplan
+ohnehin schon sehr knapp bemessen war.
 
-Wie könnten diese vermutlich gelöst werden?
+Für die Zukunft soll eine Schemadefinition in jedem Fall hinzugefügt werden.
+
+Im weiteren Verlauf des Projekts Profil.NG außerhalb dieser Bachelorarbeit soll
+die testgetriebene Entwicklung in jedem Falle weitergeführt werden. Die
+Anwendung wird für die Generierung von mehreren hunderttausend Euro Umsatz im
+Jahre die zentrale Rolle spielen, weshalb eine reibungslose Weiterentwicklung zu
+gewaährleisten ist. Ich ziehe auch in Erwägung die vorhandenen Testkategorien
+Unit- und Integrationstests noch um Akzeptanztests zu erweitern. Als mögliche
+Technologien zur Realisierung sehe ich hier die Frameworks Cucumber oder
+Nightwatch. Eine genauere Evaluierung der beiden Technologien sollte die Eignung
+für Meteor allerdings zuvor feststellen.

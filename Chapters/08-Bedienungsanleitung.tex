@@ -6,15 +6,163 @@
 
 %----------------------------------------------------------------------------------------
 
-Wie läßt sich das entwickelte System bedienen? Welche Fehlermeldungen
-existieren? Was sind die Ursachen? Wie muß der Benutzer auf auftretende
-Bedienungs- oder Systemfehler reagieren? Bedienungsanleitungen sollten auf den
-Kenntnisstand und Sprachgebrauch des zukünftigen Anwenders zugeschnitten sein.
-In der Form und Aufmachung können SIe ein Aushängeschild für Ihre Arbeit sein.
-Übersichtsdarstellungen wir Menübäume, Befehlslisten und/oder Systaxdiagramme
-erleichtern die Benutzung eines Systems umgemein und gehören heute zum Standard
-guter Dokumentationen. Neben der Einzeldarstellung von Befehlen und Funktionen
-können die Aufzeichnung von Beispielsitzungen, Fallbeispielen das Verständnis
-für das System wesentlich vertiefen. (Anmerkung: Je nach Art des entwickelten
-Systems ist es manchmal sinnvoll die Bedienungsanleitung in ein größeres
-Kapitel Anwenderdokumentation einzubetten.)
+\section{Installationsvorraussetzungen}
+
+Für die Installation der Entwicklerversion wird benötigt:
+
+\begin{description}
+  \item[Betriebssystem]{Mac OSX oder Linux}
+  \item[curl]{Um das Installationsscript zu beziehen und auszuführen}
+  \item[Internetverbindung]{Die Installation ist nur über das Internet möglich}
+\end{description}
+
+Die Installation einer Produktivumgebung ist komplexer und soll nicht Gegenstand
+dieser Arbeit sein.
+
+\section{Installation und Start}
+
+Installieren Sie die Meteorplattform mittels folgendem Shell-Befehl:
+
+\begin{verbatim}
+  $> curl https://install.meteor.com/ | sh
+\end{verbatim}
+
+Kopieren sie das Verzeichnis \textit{src/profil.ng} von dem beiliegenden
+Datenräger auf ein beliebiges Festplattenlaufwerk ihres Computers und wechseln
+in das betreffende Verzeichnis.
+
+Starten Sie die Anwendung mit dem Befehl
+
+\begin{verbatim}
+  $> meteor
+\end{verbatim}
+
+Meteor installiert jetzt alle Abhängigkeiten und startet anschließend den
+Entwicklungsserver. Die Webanwendung ist unter der URL
+\textit{http://localhost:3000} über einen Webbrowser erreichbar.
+
+\section{Unterstützte Webbrowser}
+
+Folgende Webbrowser wurden getestet und offiziell unterstützt:
+
+\begin{itemize}
+  \item{Google Chrome}
+  \item{Apple Safari}
+\end{itemize}
+
+Firefox wurde zwar nicht getestet, es ist aber wahrscheinlich, dass die Profil.NG
+problemlos mit Firefox zusammenarbeitet.
+
+Microsoft Internet Explorer wurde in keiner Version getestet. Es werden
+keinerlei Garantien für die Verwendung übernommen.
+
+
+\section{Benutzerhandbuch}
+
+Profil.NG erlaubt die Verwaltung der Produktionsabläufe für DEPAROM-Profil,
+sowie der für die Produktion relevanten Stammdaten der Kunden. Hierzu gehören
+Kundendaten, Überwachungsaufträge und Queries.
+
+\subsection{Vor dem Erstbetrieb}
+
+Da alle Funktionen hinter einem Login verborgen sind, muss zunächst ein
+Benutzerkonto angelegt werden. Den Link zum Registrierungsformular finden Sie
+unterhalb des Anmeldeformulars.
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/login-register.pdf}
+  \caption{Link zum Registrierungsformular}
+  \label{fig:login-register}
+\end{figure}
+
+Füllen Sie das Registrierungsformular aus und klicken auf die Schaltfläche
+\textit{Register Now!}. Ein Benutzerkonto wird für Sie angelegt und Sie werden
+augenblicklich mit selbigem angemeldet.
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/register-form.pdf}
+  \caption{Registrierungsformular}
+  \label{fig:register-form}
+\end{figure}
+
+\subsection{Kunde anlegen}
+
+Klicken Sie in der Navigationsleiste auf die Schaltfläche \textit{Manage
+customers}. Es erscheint eine Übersicht der im System befindlichen Kundenkonten.
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/add-customer.pdf}
+  \caption{Schaltfläche 'Add customer'}
+  \label{fig:add-customer}
+\end{figure}
+
+Klicken Sie auf die Schaltfläche \textit{Add customer}, um das Formular zum
+Erstellen eines neuen Kunden zu öffnen. Füllen Sie das Formular aus. Mit einem
+Stern markierte Felder sind Pflichtfelder. Bitte lassen Sie diese nich leer.
+Sind Sie mit Ihrer Eingabe zufrieden, klicken Sie auf die Schaltfläche
+\textit{Save customer}
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/add-customer-form.pdf}
+  \caption{Formular für das Erstellen eines neuen Kunden}
+  \label{fig:add-customer-form}
+\end{figure}
+
+\subsection{Überwachungsauftrag anlegen}
+
+Klicken Sie in der Navigationsleiste auf die Schaltfläche \textit{Manage
+customers}. Es erscheint eine Übersicht der im System befindlichen Kundenkonten.
+
+Klicken Sie auf den Namen eines Kunden, um die Ansicht zum Bearbeiten des Kunden
+zu öffnen. Siehe \autoref{fig:add-customer}, Seite \pageref{fig:add-customer}.
+
+Scrollen Sie in der Ansicht zum Bearbeiten des Kunden nach unten, bis die
+Schaltfläche \textit{Add monitoring} erscheint. Klicken Sie auf diese
+Schaltfläche.
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/add-monitoring.pdf}
+  \caption{Schaltfläche 'Add monitoring'}
+  \label{fig:add-monitoring}
+\end{figure}
+
+Füllen Sie das Formular zum Anlegen eines neuen Überwachungsauftrags aus.
+Klicken Sie auf die Schaltfläche \textit{Save monitoring}, wenn Sie mit ihren
+Eingaben zufrieden sind.
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/add-monitoring-form.pdf}
+  \caption{Formular für das Erstellen eines neuen Überwachungsauftrags}
+  \label{fig:add-monitoring-form}
+\end{figure}
+
+\subsection{Suchanfrage anlegen}
+
+Klicken Sie in der Navigationsleiste auf die Schaltfläche \textit{Manage
+customers}. Es erscheint eine Übersicht der im System befindlichen Kundenkonten.
+
+Klicken Sie auf den Namen eines Kunden, um die Ansicht zum Bearbeiten des Kunden
+zu öffnen. Siehe \autoref{fig:add-customer}, Seite \pageref{fig:add-customer}.
+
+Klicken Sie auf die \textit{Profile \#} eines Monitorings, um die Ansicht zum
+Bearbeiten des Monitorings zu öffnen. Siehe \autoref{fig:add-monitoring}, Seite
+\pageref{fig:add-monitoring}.
+
+Scrollen Sie in der Ansicht zum Bearbeiten des Monitorings nach unten, bis die
+Schaltfläche \textit{Add query} erscheint. Klicken Sie auf diese Schaltfläche.
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/add-query.pdf}
+  \caption{Schaltfläche 'Add query'}
+  \label{fig:add-query}
+\end{figure}
+
+Füllen Sie das Formular zum Anlegen eines neuen Queries aus.
+Klicken Sie auf die Schaltfläche \textit{Save query}, wenn Sie mit ihren
+Eingaben zufrieden sind.
+
+\begin{figure}[H]
+  \includegraphics[width=0.9\textwidth]{gfx/add-query-form.pdf}
+  \caption{Formular für das Erstellen eines neuen Query}
+  \label{fig:add-query-form}
+\end{figure}
